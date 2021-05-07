@@ -84,29 +84,42 @@ const warriorsGames = [{
   }
 ]
 
-const ulParent = document.createElement('ul');
+const makeChart = (games) => {
+  const ulParent = document.createElement('ul');
 
-for(let game of warriorsGames){
+for(let game of games){
     const gameLi = document.createElement('li');
-    const {homeTeam,awayTeam} = game;  // warriors could be the home team or away team
-    const {team :hTeam, points:hPoints} = homeTeam;
-    const {team :aTeam, points:aPoints} = awayTeam;
-    const teamNames = `${aTeam} @ ${hTeam}`;
-    
-    let scoreLine;
-    if(aPoints > hPoints){
-         scoreLine = `<b>${aPoints}</b> - ${hPoints}`;
-    }
-    else{
-         scoreLine = `${aPoints} - <b>${hPoints}</b>`;
-    }
+    // const {homeTeam,awayTeam} = game;  // warriors could be the home team or away team
+   
+    // const warriors = hTeam === 'Golden State' ? homeTeam : awayTeam;  // Just saying if homeTeam name is 'Golden State' then warriors are the hometeam, if not they are the away team
+    // const className = warriors.isWinner ? 'win' : 'loss';
+    // gameLi.classList.add(className);
 
-    const warriors = hTeam === 'Golden State' ? homeTeam : awayTeam;  // Just saying if homeTeam name is 'Golden State' then warriors are the hometeam, if not they are the away team
-    const className = warriors.isWinner ? 'win' : 'loss';
-    gameLi.classList.add(className);
-
-    gameLi.innerHTML = `${teamNames} ${scoreLine}`;
+    gameLi.innerHTML = getScoreLine(game);
     ulParent.appendChild(gameLi);
+    }
+    return ulParent;
 }
 
-document.body.prepend(ulParent);
+const getScoreLine = ({awayTeam,homeTeam}) => {
+  const {team :hTeam, points:hPoints} = homeTeam;
+  const {team :aTeam, points:aPoints} = awayTeam;
+  const teamNames = `${aTeam} @ ${hTeam}`;
+  
+  let scoreLine;
+  if(aPoints > hPoints){
+       scoreLine = `<b>${aPoints}</b> - ${hPoints}`;
+  }
+  else{
+       scoreLine = `${aPoints} - <b>${hPoints}</b>`;
+  }
+  return `${teamNames} ${scoreLine}`;
+}
+
+
+
+
+const chart = makeChart(warriorsGames);
+
+
+document.body.prepend(chart);
